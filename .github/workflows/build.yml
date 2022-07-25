@@ -57,7 +57,7 @@ jobs:
           brew update
           brew install libomp
           brew install hdf5
-          brew reinstall gfortran
+          brew reinstall gcc
           which gcc
           which gfortran
           echo ${TAG_STRING:11}
