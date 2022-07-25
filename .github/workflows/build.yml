@@ -57,7 +57,9 @@ jobs:
           brew update
           brew install libomp
           brew install hdf5
-          brew install gcc
+          brew install gfortran
+          which gcc
+          which gfortran
           echo ${TAG_STRING:11}
           sed -i "" "s/env python/env python3/" pam.in
           sed -i "" "s/version=.*/version='${TAG_STRING:11}',/" setup.py
