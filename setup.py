@@ -100,6 +100,10 @@ setup(name='dirac22',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='Unknown',
-    scripts=["pam", "dirac.x"],
+    scripts=[
+        "pam",
+        "dirac.x",
+        "process_schema.py",
+        "dirac_mointegral_export.x"],
     install_requires=[]
 )
