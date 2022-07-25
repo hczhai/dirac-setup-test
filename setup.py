@@ -78,7 +78,7 @@ class CMakeBuild(build_ext):
 
             subprocess.check_call([os.path.join(ext.cmake_lists_dir, "setup"),
                                   "--python={}".format(sys.executable), self.build_temp],
-                                  cwd=self.build_temp)
+                                  cwd=ext.cmake_lists_dir)
 
             subprocess.check_call(['cmake', '--build', '.', '--', '--jobs=2'],
                                   cwd=self.build_temp)
