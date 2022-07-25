@@ -3,6 +3,7 @@
 import os
 import sys
 import subprocess
+import platform
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 from distutils.command.build_scripts import build_scripts
@@ -79,6 +80,11 @@ class CMakeBuild(build_ext):
             subprocess.check_call([os.path.join(ext.cmake_lists_dir, "setup"),
                                   "--python={}".format(sys.executable), self.build_temp],
                                   cwd=ext.cmake_lists_dir)
+
+            if platform.system() == 'Darwin':
+                for mt in ['MATH_LIBS', 'CXX_FLAGS', 'C_FLAGS']:
+                    subprocess.check_call(['sed', '-i', '""', '/{}/s/fopenmp/openmp/g'.format(mt),
+                                           'CMakeCache.txt'], cwd=self.build_temp)
 
             subprocess.check_call(['cmake', '--build', '.', '--', '--jobs=2'],
                                   cwd=self.build_temp)
