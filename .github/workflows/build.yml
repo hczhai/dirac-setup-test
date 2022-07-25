@@ -64,6 +64,7 @@ jobs:
           sed -i "" "s/env python/env python3/" pam.in
           sed -i "" "s/version=.*/version='${TAG_STRING:11}',/" setup.py
           python -m pip install wheel
+          python -m pip install cmake --upgrade
           python -m pip wheel . -w ./dist --no-deps
 
       - name: prepare build wheels (manylinux)
