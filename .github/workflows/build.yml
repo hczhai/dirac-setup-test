@@ -48,7 +48,6 @@ jobs:
           git checkout v22.0
           cd ..
           cp -r dirac22/* .
-          sed -i "s/env python/env python3/g" pam.in
 
       - name: build wheels (macos)
         if: startsWith(github.ref, 'refs/tags/') && matrix.os == 'macos-latest'
@@ -59,6 +58,7 @@ jobs:
           brew install libomp
           brew install hdf5
           echo ${TAG_STRING:11}
+          sed -i "" "s/env python/env python3/" pam.in
           sed -i "" "s/version=.*/version='${TAG_STRING:11}',/" setup.py
           python -m pip install wheel
           python -m pip wheel . -w ./dist --no-deps
@@ -69,6 +69,7 @@ jobs:
           TAG_STRING: ${{ github.event.ref }}
         run: |
           echo ${TAG_STRING:11}
+          sed -i "s/env python/env python3/" pam.in
           sed -i "s/version=.*/version='${TAG_STRING:11}',/" setup.py
           cp ./.github/actions/build-wheel/Dockerfile.manylinux${{ matrix.manylinux }} ./.github/actions/build-wheel/Dockerfile
 
