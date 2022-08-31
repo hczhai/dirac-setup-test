@@ -106,6 +106,12 @@ setup(name='dirac22',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     author='Unknown',
+    package_data={
+        "pydirac22": ["DIRACschema.txt"],
+        "pydirac22.basis": ["*"],
+        "pydirac22.basis_dalton": ["*"],
+        "pydirac22.basis_ecp": ["*"],
+        },
     scripts=[
         "pam",
         "dirac.x",

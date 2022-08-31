@@ -48,6 +48,10 @@ jobs:
           git checkout v22.0
           cd ..
           cp -r dirac22/* .
+          cp -r dirac22/basis pydirac22/basis
+          cp -r dirac22/basis_dalton pydirac22/basis_dalton
+          cp -r dirac22/basis_ecp pydirac22/basis_ecp
+          cp -r dirac22/utils/DIRACschema.txt pydirac22/DIRACschema.txt
 
       - name: build wheels (macos)
         if: startsWith(github.ref, 'refs/tags/') && matrix.os == 'macos-latest'
@@ -58,11 +62,18 @@ jobs:
           brew install libomp
           brew install hdf5
           brew reinstall gcc
+          brew install gnu-sed
+          export PATH=/usr/local/opt/gnu-sed/bin:$PATH
           which gcc
           which gfortran
           echo ${TAG_STRING:11}
-          sed -i "" "s/env python/env python3/" pam.in
-          sed -i "" "s/version=.*/version='${TAG_STRING:11}',/" setup.py
+          gsed -i "s/env python/env python3/" pam.in
+          gsed -i 's/self.copy_file(self.dirac_exe/os.symlink(self.dirac_exe/g' pam.in
+          gsed -i '/pam_directory =/a \import pydirac22\ndata_directory = os.path.dirname(pydirac22.__file__)' pam.in
+          gsed -i '/basis_.*dir=/s/pam_directory/data_directory/' pam.in
+          gsed -i '/DIRACschema/s/pam_directory/data_directory/' pam.in
+          gsed -i '/sorting_wrt_energy =/s/false/true/' utils/dirac_mointegral_export.F90
+          gsed -i "s/version=.*/version='${TAG_STRING:11}',/" setup.py
           python -m pip install wheel
           python -m pip install cmake --upgrade
           python -m pip wheel . -w ./dist --no-deps
@@ -74,6 +85,11 @@ jobs:
         run: |
           echo ${TAG_STRING:11}
           sed -i "s/env python/env python3/" pam.in
+          sed -i 's/self.copy_file(self.dirac_exe/os.symlink(self.dirac_exe/g' pam.in
+          sed -i '/pam_directory =/a \import pydirac22\ndata_directory = os.path.dirname(pydirac22.__file__)' pam.in
+          sed -i '/basis_.*dir=/s/pam_directory/data_directory/' pam.in
+          sed -i '/DIRACschema/s/pam_directory/data_directory/' pam.in
+          sed -i '/sorting_wrt_energy =/s/false/true/' utils/dirac_mointegral_export.F90
           sed -i "s/version=.*/version='${TAG_STRING:11}',/" setup.py
           cp ./.github/actions/build-wheel/Dockerfile.manylinux${{ matrix.manylinux }} ./.github/actions/build-wheel/Dockerfile
 
