@@ -4,7 +4,7 @@ import os
 import sys
 import subprocess
 import platform
-from setuptools import setup, find_namespace_packages, Extension
+from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 from distutils.command.build_scripts import build_scripts
 
@@ -98,7 +98,7 @@ build.sub_commands = ([c for c in build.sub_commands if c[0] == 'build_ext'] +
 
 setup(name='dirac22',
     version='0.0.1',
-    packages=find_namespace_packages(),
+    packages=find_packages(),
     ext_modules=[CMakeExt('pam')],
     cmdclass={'build_ext': CMakeBuild, 'build_scripts': BinBuild},
     license='LICENSE',

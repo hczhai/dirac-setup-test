@@ -52,6 +52,9 @@ jobs:
           cp -r dirac22/basis_dalton pydirac22/basis_dalton
           cp -r dirac22/basis_ecp pydirac22/basis_ecp
           cp -r dirac22/utils/DIRACschema.txt pydirac22/DIRACschema.txt
+          touch pydirac22/basis/__init__.py
+          touch pydirac22/basis_dalton/__init__.py
+          touch pydirac22/basis_ecp/__init__.py
 
       - name: build wheels (macos)
         if: startsWith(github.ref, 'refs/tags/') && matrix.os == 'macos-latest'
