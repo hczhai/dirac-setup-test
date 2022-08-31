@@ -59,10 +59,11 @@ jobs:
           TAG_STRING: ${{ github.event.ref }}
         run: |
           brew update
-          brew install libomp
+          brew install llvm libomp
           brew install hdf5
           brew reinstall gcc
           brew install gnu-sed
+          export CPP=/usr/local/opt/llvm/bin/clang
           export PATH=/usr/local/opt/gnu-sed/bin:$PATH
           which gcc
           which gfortran
